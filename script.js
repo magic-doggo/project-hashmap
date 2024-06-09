@@ -19,9 +19,13 @@ class HashMap {
 
     set(key, value) {
         let currentIndex = this.hash(key);
-        let tempObj = {};
-        tempObj[key] = value;
-        this.arr[currentIndex] = tempObj;    
+        let tempObj = {key: key, value:value};
+   
+        if (this.arr[currentIndex] == undefined || this.arr[currentIndex].key == tempObj.key) {
+            this.arr[currentIndex] = tempObj;    
+        } else {
+            //make it a linekd list
+        }
     }
 }
 
