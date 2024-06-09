@@ -1,6 +1,8 @@
 class HashMap {
     constructor() {
-        
+        this.nrOfBuckets = 16;
+        this.loadFactor = 0.75;
+        this.arr = new Array(this.nrOfBuckets)
     }
     
     hash(key) { //1
@@ -9,17 +11,23 @@ class HashMap {
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
             hashCode = primeNumber * hashCode + key.charCodeAt(i);
+            hashCode = hashCode % this.nrOfBuckets;
         }
 
         return hashCode;
     }
 
     set(key, value) {
-
+        let currentIndex = this.hash(key);
+        let tempObj = {};
+        tempObj[key] = value;
+        this.arr[currentIndex] = tempObj;    
     }
 }
 
-let test = new HashMap
+let test = new HashMap;
 
-console.log(test.hash("alex")) // 1
-console.log(test)
+// console.log(test.hash("alex")) // 1
+test.set("alex", 2);
+test.set("alexa", 4);
+console.log(test);
