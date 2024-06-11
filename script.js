@@ -1,6 +1,10 @@
+// import { Node } from "./linkedList";
+import LinkedList from "./linkedList.js";
+import { Node } from "./linkedList.js";
+
 class HashMap {
     constructor() {
-        this.nrOfBuckets = 16;
+        this.nrOfBuckets = 3;
         this.loadFactor = 0.75;
         this.arr = new Array(this.nrOfBuckets)
     }
@@ -24,7 +28,10 @@ class HashMap {
         if (this.arr[currentIndex] == undefined || this.arr[currentIndex].key == tempObj.key) {
             this.arr[currentIndex] = tempObj;    
         } else {
-            //make it a linekd list
+            let test = new LinkedList;
+            test.append(this.arr[currentIndex])
+            test.append(tempObj)
+            this.arr[currentIndex] = test
         }
     }
 }
@@ -32,6 +39,11 @@ class HashMap {
 let test = new HashMap;
 
 // console.log(test.hash("alex")) // 1
-test.set("alex", 2);
-test.set("alexa", 4);
+test.set("alex2", 2);
+test.set("alexa3", 3);
+test.set("alexaz4", 4);
+test.set("alexaza5", 5);
+test.set("alexaza6", 6);
+test.set("alexaza7", 7);
+test.set("alexaza8", 8);
 console.log(test);
