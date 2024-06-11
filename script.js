@@ -1,10 +1,8 @@
-// import { Node } from "./linkedList";
 import LinkedList from "./linkedList.js";
-// import { Node } from "./linkedList.js";
 
 class HashMap {
     constructor() {
-        this.nrOfBuckets = 1;
+        this.nrOfBuckets = 2;
         this.loadFactor = 0.75;
         this.arr = new Array(this.nrOfBuckets)
         this.nrOfKeys = 0;
@@ -18,33 +16,28 @@ class HashMap {
             hashCode = primeNumber * hashCode + key.charCodeAt(i);
             hashCode = hashCode % this.nrOfBuckets;
         }
-
         return hashCode;
     }
 
-    set(key, value) {
+    set(key, value) { //2
         let currentIndex = this.hash(key);
         let tempObj = {key: key, value:value};
-
-        if (this.nrOfKeys > (this.nrOfBuckets * this.loadFactor)) {
-            this.nrOfBuckets *= 2; 
-            console.log(this.nrOfBuckets + "bucketz")
-        }
    
         if (this.arr[currentIndex] == undefined) {
             this.arr[currentIndex] = tempObj;  
             this.nrOfKeys += 1;
-            console.log(this.nrOfKeys)
         } else if (this.arr[currentIndex].key == tempObj.key) {
             this.arr[currentIndex] = tempObj;    
         } else {
             let test = new LinkedList;
-            // console.log(this.arr[currentIndex])
             test.append((this.arr[currentIndex].key), (this.arr[currentIndex].value))
             test.append(tempObj.key, tempObj.value)
             this.arr[currentIndex] = test
             this.nrOfKeys += 1;
-            console.log(this.nrOfKeys)
+        }
+
+        if (this.nrOfKeys > (this.nrOfBuckets * this.loadFactor)) {
+            this.nrOfBuckets *= 2; 
         }
     }
 }
