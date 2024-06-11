@@ -1,5 +1,6 @@
 export class Node {
-    constructor(value=null, next=null) {
+    constructor(key = null, value=null, next=null) {
+        this.key = key;
         this.value = value; 
         this.next = next;
     }    
@@ -7,14 +8,13 @@ export class Node {
 
 
 export default class LinkedList {
-    constructor(fullList) {
-        // this._fullList = fullList;
+    constructor() {
         this.head = null;
         this.length = 0;
     }
 
-    prepend(value) { //2
-        this.head = new Node(value, this.head) // is this fine or should I store the value of head in another variable and use that?
+    prepend(key, value) { //2
+        this.head = new Node(key, value, this.head) // is this fine or should I store the value of head in another variable and use that?
         this.length += 1;
         return this.head;
     }
@@ -25,15 +25,15 @@ export default class LinkedList {
         return this.head.value;        
     }
 
-    append(value) { //1
+    append(key, value) { //1
         if (this.head == null) {
-            this.prepend(value)
+            this.prepend(key, value)
         } else {
             let temporary = this.head;
             while (temporary.next != null) {
                 temporary = temporary.next;
             }
-            temporary.next = new Node(value);
+            temporary.next = new Node(key, value);
             this.length += 1;
         }
 
@@ -77,21 +77,21 @@ export default class LinkedList {
         this.length -= 1;
     }
 
-    contains(value) { //8
+    contains(key) { //8 //modified to use key instead of value
         if (this.head == null) return ("head is null");
         let temporary = this.head;
-        while (temporary != null && temporary.value != value) {
+        while (temporary != null && temporary.key != key) {
             temporary = temporary.next;
         }
         if (temporary == null) return false;
         else return true;
     }
 
-    find(value) { //9
+    find(key) { //9
         if (this.head == null) return ("head is null");
         let temporary = this.head;
         let index = 0;
-        while (temporary != null && temporary.value != value) {
+        while (temporary != null && temporary.key != key) {
             temporary = temporary.next;
             index += 1;
         }    
@@ -99,31 +99,31 @@ export default class LinkedList {
         return index;
     }
 
-    toString() { //10
-        if (this.head == null) return ("head is null");
-        let temporary = this.head;
-        let listAsString = "";
-        while (temporary != null) {
-            listAsString += ((temporary.value) + " -> ");
-            temporary = temporary.next;
-        }
-        listAsString += null;
-        return listAsString;
-    }
+    // toString() { //10 no need?
+    //     if (this.head == null) return ("head is null");
+    //     let temporary = this.head;
+    //     let listAsString = "";
+    //     while (temporary != null) {
+    //         listAsString += ((temporary.value) + " -> ");
+    //         temporary = temporary.next;
+    //     }
+    //     listAsString += null;
+    //     return listAsString;
+    // }
 
-    insertAt(value, index) { //11
+    insertAt(key, value, index) { //11
         if (this.head == null) return ("head is null");
         if (index < 0 || index > this.length) { 
             return ("inexistent index")
         } 
-        if (index == 0) return this.prepend(value);
+        if (index == 0) return this.prepend(key, value);
 
 
         let temporary = this.head;
         for (let i = 1; i < index; i++) { //start at 1 so we stop 1 before index
             temporary = temporary.next;
         }
-        temporary.next = new Node(value, temporary.next);
+        temporary.next = new Node(key, value, temporary.next);
         this.length += 1;
     }
 

@@ -1,6 +1,6 @@
 // import { Node } from "./linkedList";
 import LinkedList from "./linkedList.js";
-import { Node } from "./linkedList.js";
+// import { Node } from "./linkedList.js";
 
 class HashMap {
     constructor() {
@@ -29,8 +29,9 @@ class HashMap {
             this.arr[currentIndex] = tempObj;    
         } else {
             let test = new LinkedList;
-            test.append(this.arr[currentIndex])
-            test.append(tempObj)
+            console.log(this.arr[currentIndex])
+            test.append((this.arr[currentIndex].key), (this.arr[currentIndex].value))
+            test.append(tempObj.key, tempObj.value)
             this.arr[currentIndex] = test
         }
     }
