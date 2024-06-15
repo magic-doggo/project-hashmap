@@ -2,7 +2,7 @@ import LinkedList from "./linkedList.js";
 
 class HashMap {
     constructor() {
-        this.nrOfBuckets = 2;
+        this.nrOfBuckets = 8;
         this.loadFactor = 0.75;
         this.arr = new Array(this.nrOfBuckets)
         this.nrOfKeys = 0;
@@ -20,6 +20,9 @@ class HashMap {
     }
 
     set(key, value) { //2
+        if (this.nrOfKeys > (this.nrOfBuckets * this.loadFactor)) {
+            this.nrOfBuckets *= 2; 
+        }
         let currentIndex = this.hash(key);
         let tempObj = {key: key, value:value};
    
@@ -35,9 +38,26 @@ class HashMap {
             this.arr[currentIndex] = test
             this.nrOfKeys += 1;
         }
+    }
 
-        if (this.nrOfKeys > (this.nrOfBuckets * this.loadFactor)) {
-            this.nrOfBuckets *= 2; 
+    get(key) {
+        let currentIndex = this.hash(key);
+        if (this.arr[currentIndex] === undefined) {
+            return null;
+        } else if (typeof(this.arr[currentIndex]) == "object" && this.arr[currentIndex].key !== undefined) { 
+            if (this.arr[currentIndex].key == key) {
+                return this.arr[currentIndex].value;
+            }
+            return null;
+        } else {
+            let temporary = this.arr[currentIndex].head;
+            while ((temporary !== null)) {
+                if (temporary.key == key) {
+                    return temporary.value;
+                }
+                temporary = temporary.next;
+            }
+            return null;
         }
     }
 }
@@ -53,3 +73,8 @@ test.set("alexaza6", 6);
 test.set("alexaza7", 7);
 test.set("alexaza8", 8);
 console.log(test);
+// console.log(test.get("alex2"))
+console.log(test.get("alexaza7")) 
+
+// console.log(test.hash("alexaz4"))
+// console.log(test.hash("alex2"))
