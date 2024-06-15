@@ -60,6 +60,13 @@ class HashMap {
             return null;
         }
     }
+
+    has(key) {
+        if (this.get(key) == null) {
+            return false;
+        }
+        return true;
+    }
 }
 
 let test = new HashMap;
@@ -74,7 +81,4 @@ test.set("alexaza7", 7);
 test.set("alexaza8", 8);
 console.log(test);
 // console.log(test.get("alex2"))
-console.log(test.get("alexaza7")) 
-
-// console.log(test.hash("alexaz4"))
-// console.log(test.hash("alex2"))
+console.log(test.has("alexaza7")) 
