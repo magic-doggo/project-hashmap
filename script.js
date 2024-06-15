@@ -40,7 +40,7 @@ class HashMap {
         }
     }
 
-    get(key) {
+    get(key) { //3
         let currentIndex = this.hash(key);
         if (this.arr[currentIndex] === undefined) {
             return null;
@@ -61,14 +61,14 @@ class HashMap {
         }
     }
 
-    has(key) {
+    has(key) { //4
         if (this.get(key) == null) {
             return false;
         }
         return true;
     }
 
-    remove(key) {
+    remove(key) { //5
         if (this.get(key) == null) {
             return false;
         }
@@ -78,13 +78,17 @@ class HashMap {
             let removed = this.arr.splice(currentIndex, 1);
         } else {
             let listIndex = this.arr[currentIndex].find(key);
-            // this.arr[currentIndex].removeAt(listIndex);
+            this.arr[currentIndex].removeAt(listIndex);
             if (this.arr[currentIndex].head === null) {
                 let removed = this.arr.splice(currentIndex, 1);
             }
         }
         this.nrOfKeys -= 1;
         return true;
+    }
+
+    length() {
+        return this.nrOfKeys;
     }
 }
 
@@ -105,4 +109,5 @@ console.log(test);
 // console.log(test.arr) //undefined [1]
 test.remove("alexaza7");
 test.remove("alexaz4");
-test.remove("alexa3");
+test.remove("alexa3"); //should we lower the nr of buckets if enough keys removed?
+console.log(test.length())
