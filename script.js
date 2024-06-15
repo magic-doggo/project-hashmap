@@ -2,7 +2,7 @@ import LinkedList from "./linkedList.js";
 
 class HashMap {
     constructor() {
-        this.nrOfBuckets = 8;
+        this.nrOfBuckets = 16;
         this.loadFactor = 0.75;
         this.arr = new Array(this.nrOfBuckets)
         this.nrOfKeys = 0;
@@ -67,6 +67,25 @@ class HashMap {
         }
         return true;
     }
+
+    remove(key) {
+        if (this.get(key) == null) {
+            return false;
+        }
+        let currentIndex = this.hash(key);
+
+        if (this.arr[currentIndex].key !== undefined) {
+            let removed = this.arr.splice(currentIndex, 1);
+        } else {
+            let listIndex = this.arr[currentIndex].find(key);
+            // this.arr[currentIndex].removeAt(listIndex);
+            if (this.arr[currentIndex].head === null) {
+                let removed = this.arr.splice(currentIndex, 1);
+            }
+        }
+        this.nrOfKeys -= 1;
+        return true;
+    }
 }
 
 let test = new HashMap;
@@ -81,4 +100,9 @@ test.set("alexaza7", 7);
 test.set("alexaza8", 8);
 console.log(test);
 // console.log(test.get("alex2"))
-console.log(test.has("alexaza7")) 
+// console.log(test.has("alexaza7")) 
+
+// console.log(test.arr) //undefined [1]
+test.remove("alexaza7");
+test.remove("alexaz4");
+test.remove("alexa3");

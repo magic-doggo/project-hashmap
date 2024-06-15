@@ -128,7 +128,6 @@ export default class LinkedList {
     }
 
     removeAt(index) { //12
-        console.log(this.length)
         if (this.head == null) return ("head is null");
         if (index < 0 || index > this.length-1) {
             return ("inexistent index");
