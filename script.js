@@ -130,7 +130,6 @@ class HashMap {
         let arrayOfKeys = []
         for (let i = 0; i < this.nrOfBuckets; i++) {
             if (this.arr[i] == undefined) {
-                console.log("undefined")
                 continue;
             } else if (this.arr[i].key != undefined) {
                 arrayOfKeys.push(this.arr[i].key);
@@ -141,9 +140,48 @@ class HashMap {
                     temporary = temporary.next;    
                 }
             }
-
         }
         return arrayOfKeys;
+    }
+
+    values() {
+        let arrayOfValues = [];
+        for (let i = 0; i < this.nrOfBuckets; i++) {
+            if (this.arr[i] == undefined) {
+                continue;
+            } else if (this.arr[i].key != undefined) {
+                arrayOfValues.push(this.arr[i].value);
+            } else {
+                for (let j = 0; j < this.arr[i].length; j++) {
+                    let temporary = this.arr[i].head;
+                    arrayOfValues.push(temporary.value)
+                    temporary = temporary.next;    
+                }
+            }
+        }
+        return arrayOfValues;
+    }
+
+    entries() {
+        let arrayOfEntries = [];
+        for (let i = 0; i < this.nrOfBuckets; i++) {
+            if (this.arr[i] == undefined) {
+                continue;
+            } else if (this.arr[i].key != undefined) {
+                let tempArray = [];
+                tempArray.push(this.arr[i].key, this.arr[i].value)
+                arrayOfEntries.push(tempArray);
+            } else {
+                for (let j = 0; j < this.arr[i].length; j++) {
+                    let temporary = this.arr[i].head;
+                    let tempArray = [];
+                    tempArray.push(temporary.key, temporary.value);
+                    arrayOfEntries.push(tempArray);
+                    temporary = temporary.next;    
+                }
+            }
+        }    
+        return arrayOfEntries
     }
 }
 
@@ -166,5 +204,6 @@ console.log(test);
 // test.remove("alexaz4");
 // test.remove("alexa3"); //should we lower the nr of buckets if enough keys removed?
 // test.clear()
-
-console.log(test.keys())
+// console.log(test.keys())
+// console.log(test.values())
+console.log(test.entries())
