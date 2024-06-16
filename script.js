@@ -2,7 +2,7 @@ import LinkedList from "./linkedList.js";
 
 class HashMap {
     constructor() {
-        this.nrOfBuckets = 6;
+        this.nrOfBuckets = 4;
         this.loadFactor = 0.75;
         this.arr = new Array(this.nrOfBuckets)
         this.nrOfKeys = 0;
@@ -10,7 +10,6 @@ class HashMap {
     
     hash(key) { //1
         let hashCode = 0;
-
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
             hashCode = primeNumber * hashCode + key.charCodeAt(i);
@@ -20,15 +19,21 @@ class HashMap {
     }
 
     set(key, value) { //2
-        if (this.nrOfKeys > (this.nrOfBuckets * this.loadFactor)) {
+        if ((this.nrOfKeys + 1) > (this.nrOfBuckets * this.loadFactor)) {
+            let currentList = this.entries();
             this.nrOfBuckets *= 2; 
+            this.arr = new Array(this.nrOfBuckets)
+            this.nrOfKeys = 0;
+            for (let i = 0; i < currentList.length ; i++) {
+                this.set(currentList[i][0], currentList[i][1])                
+            }
         }
         let currentIndex = this.hash(key);
         let tempObj = {key: key, value:value};
         
-        // if (currentIndex < 0 || currentIndex >= this.arr.length) {
-        //     throw new Error("Trying to access index out of bound");
-        // } //need to increase array size, not just nrofbuckets
+        if (currentIndex < 0 || currentIndex >= this.arr.length) {
+            throw new Error("Trying to access index out of bound");
+        }
           
         if (this.arr[currentIndex] == undefined) {
             this.arr[currentIndex] = tempObj;  
@@ -46,6 +51,9 @@ class HashMap {
 
     get(key) { //3
         let currentIndex = this.hash(key);
+        if (currentIndex < 0 || currentIndex >= this.arr.length) {
+            throw new Error("Trying to access index out of bound");
+        }
         if (this.arr[currentIndex] === undefined) {
             return null;
         } else if (typeof(this.arr[currentIndex]) == "object" && this.arr[currentIndex].key !== undefined) { 
@@ -77,6 +85,9 @@ class HashMap {
             return false;
         }
         let currentIndex = this.hash(key);
+        if (currentIndex < 0 || currentIndex >= this.arr.length) {
+            throw new Error("Trying to access index out of bound");
+        }
 
         if (this.arr[currentIndex].key !== undefined) {
             let removed = this.arr.splice(currentIndex, 1);
@@ -91,42 +102,17 @@ class HashMap {
         return true;
     }
 
-    length() {
+    length() { //6
         return this.nrOfKeys;
     }
 
-    // clear() {
-    //     for(let i = 0; i < this.nrOfBuckets; i++) {
-    //         if (this.arr[i] == undefined) {
-    //             console.log("empty " + i)
-    //             continue;
-    //         }
-    
-    //         console.log(i + " not empty")
-    //         if (this.arr[i].key !== undefined) {
-    //             let removed = this.arr.splice(i, 1);
-    //             console.log("arrayremove " + i)
-    //             i += 1;
-    //         } else {
-    //             for (let j = 0; j < this.arr[i].length; j++) {
-    //                 this.arr[i].removeAt(j)
-    //                 i ++;
-    //                 j++;
-    //             }
-                
-    //             if (this.arr[i].head === null) {
-    //                 let removed = this.arr.splice(i, 1); //why i can't remove some elements?
-    //             }
-    //         }    
-    //     }    
-    // }
-    clear() {
+    clear() { //7
         for (let i = 0; i < this.arr.length; i++) {
             this.arr[i] = undefined; //does it work with current issue,where there are more buckets than length?
         }
     }
 
-    keys() {
+    keys() { //8
         let arrayOfKeys = []
         for (let i = 0; i < this.nrOfBuckets; i++) {
             if (this.arr[i] == undefined) {
@@ -144,7 +130,7 @@ class HashMap {
         return arrayOfKeys;
     }
 
-    values() {
+    values() { //9
         let arrayOfValues = [];
         for (let i = 0; i < this.nrOfBuckets; i++) {
             if (this.arr[i] == undefined) {
@@ -162,7 +148,7 @@ class HashMap {
         return arrayOfValues;
     }
 
-    entries() {
+    entries() { //10
         let arrayOfEntries = [];
         for (let i = 0; i < this.nrOfBuckets; i++) {
             if (this.arr[i] == undefined) {
@@ -172,12 +158,12 @@ class HashMap {
                 tempArray.push(this.arr[i].key, this.arr[i].value)
                 arrayOfEntries.push(tempArray);
             } else {
+                let temporary = this.arr[i].head;
                 for (let j = 0; j < this.arr[i].length; j++) {
-                    let temporary = this.arr[i].head;
                     let tempArray = [];
                     tempArray.push(temporary.key, temporary.value);
                     arrayOfEntries.push(tempArray);
-                    temporary = temporary.next;    
+                    temporary = temporary.next;   
                 }
             }
         }    
@@ -198,7 +184,6 @@ test.set("alexaza8", 8);
 console.log(test);
 // console.log(test.get("alex2"))
 // console.log(test.has("alexaza7")) 
-
 // console.log(test.arr) //undefined [1]
 // test.remove("alexaza7");
 // test.remove("alexaz4");
@@ -206,4 +191,4 @@ console.log(test);
 // test.clear()
 // console.log(test.keys())
 // console.log(test.values())
-console.log(test.entries())
+// console.log(test.entries())
