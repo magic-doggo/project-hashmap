@@ -2,7 +2,7 @@ import LinkedList from "./linkedList.js";
 
 class HashMap {
     constructor() {
-        this.nrOfBuckets = 16;
+        this.nrOfBuckets = 6;
         this.loadFactor = 0.75;
         this.arr = new Array(this.nrOfBuckets)
         this.nrOfKeys = 0;
@@ -25,7 +25,11 @@ class HashMap {
         }
         let currentIndex = this.hash(key);
         let tempObj = {key: key, value:value};
-   
+        
+        // if (currentIndex < 0 || currentIndex >= this.arr.length) {
+        //     throw new Error("Trying to access index out of bound");
+        // } //need to increase array size, not just nrofbuckets
+          
         if (this.arr[currentIndex] == undefined) {
             this.arr[currentIndex] = tempObj;  
             this.nrOfKeys += 1;
@@ -90,6 +94,57 @@ class HashMap {
     length() {
         return this.nrOfKeys;
     }
+
+    // clear() {
+    //     for(let i = 0; i < this.nrOfBuckets; i++) {
+    //         if (this.arr[i] == undefined) {
+    //             console.log("empty " + i)
+    //             continue;
+    //         }
+    
+    //         console.log(i + " not empty")
+    //         if (this.arr[i].key !== undefined) {
+    //             let removed = this.arr.splice(i, 1);
+    //             console.log("arrayremove " + i)
+    //             i += 1;
+    //         } else {
+    //             for (let j = 0; j < this.arr[i].length; j++) {
+    //                 this.arr[i].removeAt(j)
+    //                 i ++;
+    //                 j++;
+    //             }
+                
+    //             if (this.arr[i].head === null) {
+    //                 let removed = this.arr.splice(i, 1); //why i can't remove some elements?
+    //             }
+    //         }    
+    //     }    
+    // }
+    clear() {
+        for (let i = 0; i < this.arr.length; i++) {
+            this.arr[i] = undefined; //does it work with current issue,where there are more buckets than length?
+        }
+    }
+
+    keys() {
+        let arrayOfKeys = []
+        for (let i = 0; i < this.nrOfBuckets; i++) {
+            if (this.arr[i] == undefined) {
+                console.log("undefined")
+                continue;
+            } else if (this.arr[i].key != undefined) {
+                arrayOfKeys.push(this.arr[i].key);
+            } else {
+                for (let j = 0; j < this.arr[i].length; j++) {
+                    let temporary = this.arr[i].head;
+                    arrayOfKeys.push(temporary.key)
+                    temporary = temporary.next;    
+                }
+            }
+
+        }
+        return arrayOfKeys;
+    }
 }
 
 let test = new HashMap;
@@ -107,7 +162,9 @@ console.log(test);
 // console.log(test.has("alexaza7")) 
 
 // console.log(test.arr) //undefined [1]
-test.remove("alexaza7");
-test.remove("alexaz4");
-test.remove("alexa3"); //should we lower the nr of buckets if enough keys removed?
-console.log(test.length())
+// test.remove("alexaza7");
+// test.remove("alexaz4");
+// test.remove("alexa3"); //should we lower the nr of buckets if enough keys removed?
+// test.clear()
+
+console.log(test.keys())
